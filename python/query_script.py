@@ -1,3 +1,4 @@
+import sys
 import pandas as pd
 from connection_script import SqlConnection
 
@@ -7,4 +8,4 @@ def main(query_string):
     print(results_table.head())
 
 if __name__ == '__main__':
-    main("SELECT TOP 10 * FROM DWInternal.FactTransaction")
+    main(sys.argv[1])
