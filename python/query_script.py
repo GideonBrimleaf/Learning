@@ -18,7 +18,9 @@ def plot_results(dataframe, column_name):
     fig, ax = plt.subplots()
     first_column = dataframe.iloc[:,0]
     x_axis = np.arange(len(first_column))
+    x_axis_labels = first_column
     ax.plot(x_axis, dataframe[column_name])
+    plt.xticks(x_axis, x_axis_labels, rotation = 45)
     return plt.show()
 
 def main():
