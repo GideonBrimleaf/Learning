@@ -39,5 +39,5 @@ def main(sql_file, chart_type = "line"):
     graphs = generate_graphs(sql_results, chart_type)
     return graphs
 
- if __name__ == '__main__':
+if __name__ == '__main__':
     main(sys.argv[1], sys.argv[2])
