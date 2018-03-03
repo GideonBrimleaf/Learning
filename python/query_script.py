@@ -19,8 +19,10 @@ def plot_results(dataframe, column_name):
     first_column = dataframe.iloc[:,0]
     x_axis = np.arange(len(first_column))
     x_axis_labels = first_column
+    x_axis_name = dataframe.dtypes.index[0]
     ax.plot(x_axis, dataframe[column_name])
     plt.xticks(x_axis, x_axis_labels, rotation = 45)
+    ax.set(xlabel = x_axis_name, title = column_name)
     return plt.show()
 
 def main():
@@ -31,6 +33,7 @@ def main():
 
 # sql_query = read_sql_query("sql_string.sql")
 # sql_results = execute_sql_query(sql_query)
+# sql_results.dtypes.index[0]
 
 if __name__ == '__main__':
     main()
