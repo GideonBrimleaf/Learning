@@ -24,7 +24,7 @@ def plot_results(dataframe, column_name):
 def main():
     sql_query = read_sql_query(sys.argv[1])
     sql_results = execute_sql_query(sql_query)
-    graph = plot_results(sql_results, 'userCount')
+    graph = plot_results(sql_results, 'transactionCount')
     return graph
 
 # sql_query = read_sql_query("sql_string.sql")
