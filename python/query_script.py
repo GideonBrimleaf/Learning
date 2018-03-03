@@ -25,15 +25,24 @@ def plot_results(dataframe, column_name):
     ax.set(xlabel = x_axis_name, title = column_name)
     return plt.show()
 
+def generate_graphs(dataframe):
+    for column_name in dataframe.dtypes.index[1:]:
+        column_name_index = str(column_name)
+        graph = plot_results(dataframe, column_name_index)
+    return graph
+
 def main():
     sql_query = read_sql_query(sys.argv[1])
     sql_results = execute_sql_query(sql_query)
-    graph = plot_results(sql_results, 'transactionCount')
-    return graph
+    graphs = generate_graphs(sql_results)
+    return graphs
 
 # sql_query = read_sql_query("sql_string.sql")
 # sql_results = execute_sql_query(sql_query)
-# sql_results.dtypes.index[0]
+
+# for column_name in sql_results.dtypes.index[1:]:
+#     string = str(column_name)
+#     graph = plot_results(sql_results, string)
 
 if __name__ == '__main__':
     main()
