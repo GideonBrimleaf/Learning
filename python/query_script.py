@@ -12,7 +12,7 @@ def read_sql_query(filename):
 def execute_sql_query(query_string):
     conn = SqlConnection().mdbdw_connection()
     results_table = pd.read_sql(query_string,conn)
-    return(results_table.head())
+    return results_table
 
 def plot_results(dataframe, column_name):
     fig, ax = plt.subplots()
@@ -27,8 +27,7 @@ def plot_results(dataframe, column_name):
 
 def generate_graphs(dataframe):
     for column_name in dataframe.dtypes.index[1:]:
-        column_name_index = str(column_name)
-        graph = plot_results(dataframe, column_name_index)
+        graph = plot_results(dataframe, column_name)
     return graph
 
 def main():
@@ -36,13 +35,6 @@ def main():
     sql_results = execute_sql_query(sql_query)
     graphs = generate_graphs(sql_results)
     return graphs
-
-# sql_query = read_sql_query("sql_string.sql")
-# sql_results = execute_sql_query(sql_query)
-
-# for column_name in sql_results.dtypes.index[1:]:
-#     string = str(column_name)
-#     graph = plot_results(sql_results, string)
 
 if __name__ == '__main__':
     main()
