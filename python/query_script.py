@@ -30,11 +30,11 @@ def generate_graphs(dataframe):
         graph = plot_results(dataframe, column_name)
     return graph
 
-def main():
-    sql_query = read_sql_query(sys.argv[1])
+def main(sql_file):
+    sql_query = read_sql_query(sql_file)
     sql_results = execute_sql_query(sql_query)
     graphs = generate_graphs(sql_results)
     return graphs
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1])
