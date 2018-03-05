@@ -1,18 +1,8 @@
 import sys
 import pandas as pd
-from connection_script import SqlConnection
+from db_query import DatabaseQuery
 import matplotlib.pyplot as plt
 import numpy as np
-
-def read_sql_query(filename):
-    file = open(filename, "r")
-    query_string = file.read()
-    return query_string
-
-def execute_sql_query(query_string):
-    conn = SqlConnection().mdbdw_connection()
-    results_table = pd.read_sql(query_string,conn)
-    return results_table
 
 def plot_results(dataframe, column_name, chart_type = "line"):
     fig, ax = plt.subplots()
@@ -34,8 +24,8 @@ def generate_graphs(dataframe, chart_type = "line"):
     return graph
 
 def main(sql_file, chart_type = "line"):
-    sql_query = read_sql_query(sql_file)
-    sql_results = execute_sql_query(sql_query)
+    sql_query = DatabaseQuery().read_sql_query(sql_file)
+    sql_results = DatabaseQuery().execute_sql_query(sql_query)
     graphs = generate_graphs(sql_results, chart_type)
     return graphs
 
