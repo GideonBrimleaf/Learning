@@ -2,8 +2,8 @@ import sys
 from db_query import DatabaseQuery
 from graph_data import DataGraph
 def main(sql_file, chart_type = "line"):
-    sql_query = DatabaseQuery().read_sql_query(sql_file)
-    sql_results = DatabaseQuery().execute_sql_query(sql_query)
+    # sql_query = DatabaseQuery().read_sql_query(sql_file)
+    sql_results = DatabaseQuery().execute_sql_query(sql_file)
     graphs = DataGraph().generate_graphs(sql_results, chart_type)
     return graphs
 
