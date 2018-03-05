@@ -18,7 +18,7 @@ class DataGraph:
         ax.set(xlabel = x_axis_name, title = column_name)
         return plt.show()
 
-def generate_graphs(self, dataframe, chart_type = "line"):
+    def generate_graphs(self, dataframe, chart_type = "line"):
         for column_name in dataframe.dtypes.index[1:]:
-            graph = plot_results(dataframe, column_name, chart_type)
+            graph = self.plot_results(dataframe, column_name, chart_type)
         return graph
