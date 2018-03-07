@@ -1,5 +1,5 @@
 import pandas as pd
-from connection_script import SqlConnection
+from python_query.connection_script import SqlConnection
 
 class DatabaseQuery:
 

@@ -1,6 +1,6 @@
 import sys
-from db_query import DatabaseQuery
-from graph_data import DataGraph
+from python_query.db_query import DatabaseQuery
+from python_query.graph_data import DataGraph
 
 def main(sql_file, chart_type = "line"):
     sql_results = DatabaseQuery().execute_sql_query(sql_file)
