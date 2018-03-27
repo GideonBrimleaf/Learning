@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pylab as plt
 from statsmodels.tsa.stattools import adfuller
+from statsmodels.tsa.seasonal import seasonal_decompose
 # from matplotlib.pylab import rcParams
 # rcParams['figure.figsize'] = 15, 6
 
@@ -44,3 +45,29 @@ test_stationarity(ts_log_moving_avg_diff)
 ts_log_diff = ts_log - ts_log.shift()
 ts_log_diff.dropna(inplace=True)
 test_stationarity(ts_log_diff)
+
+#let's decomopose the shit out of this
+decomposition = seasonal_decompose(ts_log)
+
+trend = decomposition.trend
+seasonal = decomposition.seasonal
+residual = decomposition.resid
+
+plt.subplot(411)
+plt.plot(ts_log, label='Original')
+plt.legend(loc='best')
+plt.subplot(412)
+plt.plot(trend, label='Trend')
+plt.legend(loc='best')
+plt.subplot(413)
+plt.plot(seasonal,label='Seasonality')
+plt.legend(loc='best')
+plt.subplot(414)
+plt.plot(residual, label='Residuals')
+plt.legend(loc='best')
+plt.tight_layout()
+plt.show()
+
+ts_log_decompose = residual
+ts_log_decompose.dropna(inplace=True)
+test_stationarity(ts_log_decompose)
