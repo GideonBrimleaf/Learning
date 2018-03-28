@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pylab as plt
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
-# from matplotlib.pylab import rcParams
-# rcParams['figure.figsize'] = 15, 6
+from statsmodels.tsa.stattools import acf, pacf
+from statsmodels.tsa.arima_model import ARIMA
 
 dateparse = lambda dates: pd.datetime.strptime(dates, '%Y-%m')
 data = pd.read_csv('passengers.csv', parse_dates=['Month'], index_col=['Month'],date_parser=dateparse)
@@ -28,7 +28,7 @@ def test_stationarity(timeseries):
     plt.plot(rolmean, color='red', label='Rolling Mean')
     plt.plot(rolstd, color='black', label = 'Rolling Std')
     plt.legend()
-    #plt.title('Rolling Mean & Standard Deviation')
+    plt.title('Rolling Mean & Standard Deviation')
     plt.show()
 
 #let's start removing the trend and making the data more stationary
@@ -71,3 +71,34 @@ plt.show()
 ts_log_decompose = residual
 ts_log_decompose.dropna(inplace=True)
 test_stationarity(ts_log_decompose)
+
+#Let's start some modelling! Firstly let's run some
+#shit here to figoure out the p and q values in our
+#ARIMA model
+lag_acf = acf(ts_log_diff, nlags=20)
+lag_pacf = pacf(ts_log_diff, nlags=20, method='ols')
+plt.subplot(121) 
+plt.plot(lag_acf)
+plt.axhline(y=0,linestyle='--',color='gray')
+plt.axhline(y=-1.96/np.sqrt(len(ts_log_diff)),linestyle='--',color='gray')
+plt.axhline(y=1.96/np.sqrt(len(ts_log_diff)),linestyle='--',color='gray')
+plt.title('Autocorrelation Function')
+plt.subplot(122)
+plt.plot(lag_pacf)
+plt.axhline(y=0,linestyle='--',color='gray')
+plt.axhline(y=-1.96/np.sqrt(len(ts_log_diff)),linestyle='--',color='gray')
+plt.axhline(y=1.96/np.sqrt(len(ts_log_diff)),linestyle='--',color='gray')
+plt.title('Partial Autocorrelation Function')
+plt.tight_layout()
+plt.show()
+
+#furkin Auto-Arima this shiznit
+from pyramid.arima import auto_arima
+stepwise_model = auto_arima(data, start_p=1, start_q=1,
+                           max_p=3, max_q=3, m=12,
+                           start_P=0, seasonal=True,
+                           d=1, D=1, trace=True,
+                           error_action='ignore',  
+                           suppress_warnings=True, 
+                           stepwise=True)
+print(stepwise_model.aic())
