@@ -1,10 +1,12 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 import matplotlib.pylab as plt
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.stattools import acf, pacf
 from statsmodels.tsa.arima_model import ARIMA
+import rpy2.robjects as ro
+from rpy2.robjects import pandas2ri
 
 dateparse = lambda dates: pd.datetime.strptime(dates, '%Y-%m')
 data = pd.read_csv('passengers.csv', parse_dates=['Month'], index_col=['Month'],date_parser=dateparse)
@@ -93,12 +95,10 @@ plt.tight_layout()
 plt.show()
 
 #furkin Auto-Arima this shiznit
-from pyramid.arima import auto_arima
-stepwise_model = auto_arima(data, start_p=1, start_q=1,
-                           max_p=3, max_q=3, m=12,
-                           start_P=0, seasonal=True,
-                           d=1, D=1, trace=True,
-                           error_action='ignore',  
-                           suppress_warnings=True, 
-                           stepwise=True)
-print(stepwise_model.aic())
+pandas2ri.activate()
+ro.r('install.packages("forecast")')
+ro.r('library(forecast)')
+rdf = pandas2ri.py2ri(ts_log_diff)
+ro.globalenv['r_timeseries'] = rdf
+pred = ro.r('as.data.frame(forecast(auto.arima(r_timeseries),h=5))')
+pred
